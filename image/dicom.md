@@ -34,3 +34,62 @@
  1. Elements\*
 
  PIXEL DATA: `7fe0 0010`
+
+# dicom parser findings
+
+## DCMTK
+
+*TODO* Where is the value len parsing?
+
+### dcdeftag.h
+`/dcmdata/include/dcmtk/dcmdata/dcdeftag.h`
+4267 entries...
+
+```
+#define DCM_CommandGroupLength                   DcmTagKey(0x0000, 0x0000)
+#define DCM_RETIRED_CommandLengthToEnd           DcmTagKey(0x0000, 0x0001)
+...
+#define DCM_FileMetaInformationGroupLength       DcmTagKey(0x0002, 0x0000)
+#define DCM_FileMetaInformationVersion           DcmTagKey(0x0002, 0x0001)
+```
+
+
+### dcmetinf.cc
+`/dcmdata/libsrc/dcmetinf.cc`
+
+397:
+```
+OFCondition DcmMetaInfo::read(DcmInputStream &inStream,
+                              const E_TransferSyntax xfer,
+                              const E_GrpLenEncoding glenc,
+                              const Uint32 maxReadLength)
+{
+```
+
+455:
+```
+#ifdef REJECT_FILE_IF_META_GROUP_LENGTH_ABSENT
+  // this is the old behaviour up to DCMTK 3.5.3: fail with EC_CorruptedData error code
+  // if the file meta header group length (0002,0000) is absent.
+  if (getTransferState() == ERW_inWork && getLengthField() != 0 && errorFlag.good())
+  {
+#else
+  // new behaviour: accept file without meta header group length, determine end of
+  // meta header based on heuristic that checks for group 0002 tags.
+```
+
+488: 
+```
+if (newTag.getGroup() != 0x0002)
+    DCMDATA_WARN("DcmMetaInfo: Invalid Element " << newTag << " found in Meta Information Header");
+```
+
+
+### dcvr.h
+`/dcmdata/include/dcmtk/dcmdata/dcvr.h`
+```
+enum DcmEVR
+{
+    /// application entity title
+    EVR_AE,
+```
