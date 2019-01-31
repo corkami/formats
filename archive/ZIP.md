@@ -179,31 +179,51 @@ file_comment   | ?    |
 
 
 # digital signature
-header signature                4 bytes  `.P .K 05 05`
-size of data                    2 bytes
-signature data (variable size)
+
+<!--
+name|size|type
+signature|4|`.P .K 05 05`
+size|2|
+data|?
+-->
+
+name      | size | type
+--------- | ---- | -------------
+signature | 4    | `.P .K 05 05`
+size      | 2    |
+data      | ?    |
 
 
 # zip64 end of central dir
 
-signature                       4 bytes  `.P .K 06 06`
-size of zip64 end of central
-directory record                8 bytes
-version made by                 2 bytes
-version needed to extract       2 bytes
-number of this disk             4 bytes
-number of the disk with the 
-start of the central directory  4 bytes
-total number of entries in the
-central directory on this disk  8 bytes
-total number of entries in the
-central directory               8 bytes
-size of the central directory   8 bytes
-offset of start of central
-directory with respect to
-the starting disk number        8 bytes
-zip64 extensible data sector    (variable size)
+<!-- csvtable
+name|size|type
+signature|4|`.P .K 06 06`
+EoCD64 size|8
+version|2
+version_needed|2
+disk_nb|4
+cd_disk|4
+disk_entries_nb|8
+disk_entries|8
+cd_size|8
+offset|8
+data_sector|?
+-->
 
+name            | size | type
+--------------- | ---- | -------------
+signature       | 4    | `.P .K 06 06`
+EoCD64 size     | 8    |
+version         | 2    |
+version_needed  | 2    |
+disk_nb         | 4    |
+cd_disk         | 4    |
+disk_entries_nb | 8    |
+disk_entries    | 8    |
+cd_size         | 8    |
+offset          | 8    |
+data_sector     | ?    |
 
 # links
 
