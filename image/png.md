@@ -118,11 +118,28 @@ An APNG is a PNG, with 3 extra kinds of chunks while a MNG share the same struct
 # Tricks
 - CRC32 are usually ignored.
 - the CRC32 of the last chunk may be absent.
-- the `IHDR` / `Image Header` should theoretically be the first chunk, actually this is not enforced.
+- the `IHDR` / `Image Header` should theoretically be the first chunk, actually this is usually not enforced - excepted by Safari/OS X preview?
 - the `IEND` / `Image End` chunk can be omitted.
 - `PLTE` chunks are ignored if the image is not indexed.
 - Any ancillary chunk (starting with a lowercase letter) can be inserted, as many times as necessary.
 - Several `PLTE` / `Palette` chunks may be tolerated. Different tools may then use a different one, and render different colors accordingly.
+
+## Image type
+
+The image type is a bitmask:
+- 1: indexed
+- 2: RGB (if not, greyscale)
+- 4: ALPHA
+
+valid image types:
+- 0: grayscale
+- 2: RGB
+- 3: indexed RGB
+- 4: grayscale w/ alpha
+- 6: RGBA
+
+Indexed images can only be RGB.
+Indexed grayscale (1 and 5 w/ alpha) and indexed RGBA (7) are not supported.
 
 # Addendum
 - [Encoding Web Shells in PNG IDAT chunks](https://www.idontplaydarts.com/2012/06/encoding-web-shells-in-png-idat-chunks/)
