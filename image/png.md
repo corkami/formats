@@ -33,6 +33,42 @@ A valid PNG is at least 3 chunks: `IHDR` `IDAT` `IEND`.
 ![a dissected RGB png](PNGRGB_dissected.png)
 *Fig: a dissected [RGB png](rgb.png)*
 
+## Image Header
+
+`Width:4;Height:4;BPP:1;Type:1;Compression:1;Filter:1;Interlacing:1;`
+
+Width, Height: 1-2^31 - Zero is an invalid value, signed numbers are not valid.
+
+BPP: 1/2/4/8/16
+
+Type: a bitmask (1:Palette, 2:RGB, 4:Alpha), but Palette can only be RGBA
+
+Types and BPP:
+- 0: Grayscale - BPP:1/2/4/8/16
+- 1: indexed grayscale is not valid.
+- 2: RGB - BPP:8/16
+- 3: Indexed RGB - BPP:1/2/4/8
+- 4: Grayscale alpha - BPP:8/16
+- 5: indexed grayscale alpha is not valid.
+- 6: RGBA - BPP:8/16
+
+Compression: 0:Deflate. The only possible value.
+
+Filter: 0:none (default) / 64:Intrapixel differencing for MNG only 
+
+Interlacing: 0:None (default) / 1:Adam7
+
+/   | 0   | 1   | 2   | 3   | 4   | 5   | 6   | 7
+--- | --- | --- | --- | --- | --- | --- | --- | ---
+0   | 1   | 6   | 4   | 6   | 2   | 6   | 4   | 6
+1   | 7   | 7   | 7   | 7   | 7   | 7   | 7   | 7
+2   | 5   | 6   | 5   | 6   | 5   | 6   | 5   | 6
+3   | 7   | 7   | 7   | 7   | 7   | 7   | 7   | 7
+4   | 3   | 6   | 4   | 6   | 3   | 6   | 4   | 6
+5   | 7   | 7   | 7   | 7   | 7   | 7   | 7   | 7
+6   | 5   | 6   | 5   | 6   | 5   | 6   | 5   | 6
+7   | 7   | 7   | 7   | 7   | 7   | 7   | 7   | 7
+
 # Chunk types
 
 ## Png Specifications 1.2 (ISO)
