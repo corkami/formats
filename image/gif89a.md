@@ -212,9 +212,10 @@ all other Control blocks have a limited scope, restricted to the Graphic-Renderi
 Special Purpose blocks do not delimit the scope of any Control blocks;
 Special Purpose blocks are transparent to the decoding process.
 Graphic-Rendering blocks and extensions are used as scope delimiters for Control blocks and extensions.
-The labels used to identify labeled blocks fall into three ranges : `0x00`-`0x7F` (0-127) are the Graphic Rendering blocks,
-excluding the Trailer (`0x3B`); `0x80`-`0xF9` (128-249) are the Control blocks;
-0xFA-0xFF (250-255) are the Special Purpose blocks.
+The labels used to identify labeled blocks fall into three ranges :
+`0x00`-`0x7F` (0-127) are the Graphic Rendering blocks, excluding the Trailer (`0x3B`);
+`0x80`-`0xF9` (128-249) are the Control blocks;
+`0xFA`-`0xFF` (250-255) are the Special Purpose blocks.
 These ranges are defined so that decoders can handle block scope by appropriately identifying block labels,
 even when the block itself cannot be processed.
 
@@ -244,7 +245,7 @@ The first byte of the Data sub-block indicates the number of data bytes to follo
 A data sub-block may contain from 0 to 255 data bytes.
 The size of the block does not account for the size byte itself,
 therefore, the empty sub-block is one whose size field contains `0x00`.
-2. Required Version: 87a
+2. Required Version: `87a`
 3. Syntax:
 
 ```
@@ -280,7 +281,7 @@ therefore, the empty sub-block is one whose size field contains `0x00`.
 
 1. Description: This zero-length Data Sub-block is used to terminate a sequence of Data Sub-blocks.
 It contains a single byte in the position of the Block Size field and does not contain data.
-2. Required Version: 87a
+2. Required Version: `87a`
 3. Syntax:
 
 ```
@@ -289,7 +290,7 @@ It contains a single byte in the position of the Block Size field and does not c
   0  |               |  Block Size     Byte
      +---------------+
 ```
-- i. Block Size - Number of bytes in the Data Sub-block; this field contains the fixed value 0x00.
+- i. Block Size - Number of bytes in the Data Sub-block; this field contains the fixed value `0x00`.
 - ii. Data Values - This block does not contain any data.
 
 4. Extensions and Scope: This block terminates the immediately preceding sequence of Data Sub-blocks. This block cannot be modified by any extension.
@@ -322,13 +323,13 @@ This block must appear at the beginning of every Data Stream.
 ```
 
   - i. Signature - Identifies the GIF Data Stream.
-    This field contains the fixed value 'GIF'.
+    This field contains the fixed value `GIF`.
   - ii. Version - Version number used to format the data stream.
     Identifies the minimum set of capabilities necessary to a decoder to fully process the contents of the Data Stream.
 
     Version Numbers as of 10 July 1990 :
-    * "87a" - May 1987
-    * "89a" - July 1989
+    * `87a` - May 1987
+    * `89a` - July 1989
     
     Version numbers are ordered numerically increasing on the first two digits starting with 87 (87,88,...,99,00,...,85,86)
     and alphabetically increasing on the third character (a,...,z).
@@ -359,7 +360,7 @@ This implies that they could refer to window coordinates in a window-based envir
 
       This block is REQUIRED; exactly one Logical Screen Descriptor must be present per Data Stream.
 
-2. Required Version:  Not applicable. This block is not subject to a version number.
+2. Required Version: Not applicable. This block is not subject to a version number.
 This block must appear immediately after the Header.
 
 3. Syntax:
@@ -433,14 +434,17 @@ Packed Fields:
    
 -  viii. Pixel Aspect Ratio - Factor used to compute an approximation of the aspect ratio of the pixel in the original image.
    If the value of the field is not 0, this approximation of the aspect ratio is computed based on the formula:
-   `Aspect Ratio = (Pixel Aspect Ratio + 15) / 64`
+
+   ```
+   Aspect Ratio = (Pixel Aspect Ratio + 15) / 64
+   ```
    
    The Pixel Aspect Ratio is defined to be the quotient of the pixel's width over its height.
    The value range in this field allows specification of the widest pixel of 4:1 to the tallest pixel of 1:4 in increments of 1/64th.
    
    Values :
-   * 0: No aspect ratio information is given.
-   * 1..255: Value used in the computation.
+   * `0`: No aspect ratio information is given.
+   * `1`..`255`: Value used in the computation.
 
 4. Extensions and Scope: The scope of this block is the entire Data Stream.
 This block cannot be modified by any extension.
@@ -458,7 +462,7 @@ if present, it immediately follows the Logical Screen Descriptor and contains a 
 
 This block is OPTIONAL; at most one Global Color Table may be present per Data Stream.
 
-2. Required Version: 87a
+2. Required Version: `87a`
 
 3. Syntax
 
@@ -508,7 +512,7 @@ This block is REQUIRED for an image.
 Exactly one Image Descriptor must be present per image in the Data Stream.
 An unlimited number of images may be present per Data Stream.
 
-2. Required Version: 87a
+2. Required Version: `87a`
 3. Syntax:
 
 ```
@@ -544,7 +548,7 @@ Packed Fields:
 * Size of Local Color Table : 3 Bits
 
 - i. Image Separator - Identifies the beginning of an Image Descriptor.
-This field contains the fixed value `0x2C`.
+This field contains the fixed value `0x2C` / `,`.
 
 - ii. Image Left Position - Column number, in pixels, of the left edge of the image, with respect to the left edge of the Logical Screen.
 Leftmost column of the Logical Screen is 0.
@@ -602,7 +606,7 @@ if present, the Local Color Table immediately follows the Image Descriptor and c
 If present, this color table temporarily becomes the active color table and the following image should be processed using it.
 This block is OPTIONAL; at most one Local Color Table may be present per Image Descriptor and its scope is the single image associated with the Image Descriptor that precedes it.
 
-2. Required Version:"87a
+2. Required Version: `87a`
 
 3. Syntax:
 
@@ -645,7 +649,7 @@ Pixel indices are in order of left to right and from top to bottom.
 Each index must be within the range of the size of the active color table, starting at 0.
 The sequence of indices is encoded using the LZW Algorithm with variable-length code, as described in Appendix F
 
-2. Required Version: 87a
+2. Required Version: `87a`
 
 3. Syntax: The image data format is as follows:
 
@@ -719,13 +723,13 @@ Packed Fields:
 * Transparent Color Flag : 1 Bit
 
 - i. Extension Introducer - Identifies the beginning of an extension block.
-This field contains the fixed value `0x21`.
+This field contains the fixed value `0x21` / `!`.
 
 - ii. Graphic Control Label - Identifies the current block as a Graphic Control Extension.
 This field contains the fixed value `0xF9`.
 
 - iii. Block Size - Number of bytes in the block, after the Block Size field and up to but not including the Block Terminator.
-This field contains the fixed value 4.
+This field contains the fixed value `4`.
 
 - iv. Disposal Method - Indicates the way in which the graphic is to be treated after being displayed.
 
@@ -818,7 +822,7 @@ This block is OPTIONAL; any number of them may appear in the Data Stream.
 ```
 
 - i. Extension Introducer - Identifies the beginning of an extension block.
-This field contains the fixed value `0x21`.
+This field contains the fixed value `0x21` / `!`.
 
 - ii. Comment Label - Identifies the block as a Comment Extension.
 This field contains the fixed value `0xFE`.
@@ -917,11 +921,11 @@ This block is OPTIONAL; any number of them may appear in the Data Stream.
      +---------------+
 ```
 
-- i) Extension Introducer - Identifies the beginning of an extension block. This field contains the fixed value `0x21`.
+- i) Extension Introducer - Identifies the beginning of an extension block. This field contains the fixed value `0x21` / `!`.
 
 - ii) Plain Text Label - Identifies the current block as a Plain Text Extension. This field contains the fixed value `0x01`.
 
-- iii) Block Size - Number of bytes in the extension, after the Block Size field and up to but not including the beginning of the data portion. This field contains the fixed value 12.
+- iii) Block Size - Number of bytes in the extension, after the Block Size field and up to but not including the beginning of the data portion. This field contains the fixed value `12`.
 
 - iv) Text Grid Left Position - Column number, in pixels, of the left edge of the text grid, with respect to the left edge of the Logical Screen.
 
@@ -1012,14 +1016,14 @@ it conforms with the extension block syntax, as described below, and its block l
 ```
 
 i) Extension Introducer - Defines this block as an extension.
-This field contains the fixed value 0x21.
+This field contains the fixed value `0x21` / `!`.
 
 ii) Application Extension Label - Identifies the block as an Application Extension.
-This field contains the fixed value 0xFF.
+This field contains the fixed value `0xFF`.
 
 iii) Block Size - Number of bytes in this extension block, following the Block Size field,
 up to but not including the beginning of the Application Data.
-This field contains the fixed value 11.
+This field contains the fixed value `11`.
 
 iv) Application Identifier - Sequence of eight printable ASCII characters used to identify the application owning the Application Extension.
 
@@ -1038,9 +1042,9 @@ This block cannot be modified by any extension.
 
 1. Description:
 This block is a single-field block indicating the end of the GIF Data Stream.
-It contains the fixed value 0x3B.
+It contains the fixed value `0x3B` / `;`.
 
-2. Required Version: 87a
+2. Required Version: `87a`
 
 3. Syntax
 
@@ -1072,20 +1076,23 @@ Local Color Table         | Opt. (*) | none       | no   | 87a
 Logical Screen Descriptor | Req. (1) | none       | no   | 87a (89a)
 Plain Text Extension      | Opt. (*) | 0x01 (001) | yes  | 89a
 Trailer                   | Req. (1) | 0x3B (059) | no   | 87a
-Unlabeled Blocks          |          |            |      |
-Header                    | Req. (1) | none       | no   | N/A
-Logical Screen Descriptor | Req. (1) | none       | no   | 87a (89a)
-Global Color Table        | Opt. (1) | none       | no   | 87a
-Local Color Table         | Opt. (*) | none       | no   | 87a
-Graphic-Rendering Blocks  |          |            |      |
-Plain Text Extension      | Opt. (*) | 0x01 (001) | yes  | 89a
-Image Descriptor          | Opt. (*) | 0x2C (044) | no   | 87a (89a)
-Control Blocks            |          |            |      |
-Graphic Control Extension | Opt. (*) | 0xF9 (249) | yes  | 89a
-Special Purpose Blocks    |          |            |      |
-Trailer                   | Req. (1) | 0x3B (059) | no   | 87a
-Comment Extension         | Opt. (*) | 0xFE (254) | yes  | 89a
-Application Extension     | Opt. (*) | 0xFF (255) | yes  | 89a
+
+Block Name                   | Required | Label      | Ext. | Vers.
+---------------------------- | -------- | ---------- | ---- | ---------
+**Unlabeled Blocks**         |          |            |      |
+Header                       | Req. (1) | none       | no   | N/A
+Logical Screen Descriptor    | Req. (1) | none       | no   | 87a (89a)
+Global Color Table           | Opt. (1) | none       | no   | 87a
+Local Color Table            | Opt. (*) | none       | no   | 87a
+**Graphic-Rendering Blocks** |          |            |      |
+Plain Text Extension         | Opt. (*) | 0x01 (001) | yes  | 89a
+Image Descriptor             | Opt. (*) | 0x2C (044) | no   | 87a (89a)
+**Control Blocks**           |          |            |      |
+Graphic Control Extension    | Opt. (*) | 0xF9 (249) | yes  | 89a
+**Special Purpose Blocks**   |          |            |      |
+Trailer                      | Req. (1) | 0x3B (059) | no   | 87a
+Comment Extension            | Opt. (*) | 0xFE (254) | yes  | 89a
+Application Extension        | Opt. (*) | 0xFF (255) | yes  | 89a
 
 legend:
 * (1)   if present, at most one occurrence
@@ -1319,14 +1326,14 @@ In brief these steps are:
 
 4. Package the Bytes - Package sets of bytes into blocks preceded by character counts and output.
 
-ESTABLISH CODE SIZE
+## Establish code size
 
 The first byte of the Compressed Data stream is a value indicating the minimum number of bits required to represent the set of actual pixel values.
 Normally this will be the same as the number of color bits.
 Because of some algorithmic constraints however, black & white images which have one color bit must be indicated as having a code size of 2.
 This code size value also implies that the compression codes must start out one bit longer.
 
-COMPRESSION
+## Compression
 
 The LZW algorithm converts a series of data values into a series of codes which may be raw values or a code designating a series of values.
 Using text characters as an analogy, the output code consists of a character or a code representing a string of characters.
@@ -1351,7 +1358,7 @@ This defines a maximum code value of 4095 (0xFFF).
 Whenever the LZW code value would exceed the current code length, the code length is increased by one.
 The packing/unpacking of these codes must then be altered to reflect the new code length.
 
-BUILD 8-BIT BYTES
+## Build 8-bit bytes
 
 Because the LZW compression used for GIF creates a series of variable length codes, of between 3 and 12 bits each,
 these codes must be reformed into a series of 8-bit bytes that will be the characters actually stored or transmitted.
@@ -1380,18 +1387,18 @@ Assuming a character array of 8 bits per character and using 5 bit codes to be p
 
 Note that the physical packing arrangement will change as the number of bits per compression code change but the concept remains the same.
 
-PACKAGE THE BYTES
+## Package the bytes
 
 Once the bytes have been created, they are grouped into blocks for output by preceding each block of 0 to 255 bytes with a character count byte.
 A block with a zero byte count terminates the Raster Data stream for a given image.
 These blocks are what are actually output for the GIF image.
 This block format has the side effect of allowing a decoding program the ability to read past the actual image data if necessary by reading block counts and then skipping over the data.
 
-FURTHER READING
+## Further reading
 
-- [1] Ziv, J. and Lempel, A. : "A Universal Algorithm for Sequential Data Compression", IEEE Transactions on Information Theory, May 1977.
-- [2] Welch, T. : "A Technique for High-Performance Data Compression", Computer, June 1984.
-- [3] Nelson, M.R. : "LZW Data Compression", Dr. Dobb's Journal, October 1989.
+1. Ziv, J. and Lempel, A. : "A Universal Algorithm for Sequential Data Compression", IEEE Transactions on Information Theory, May 1977.
+2. Welch, T. : "A Technique for High-Performance Data Compression", Computer, June 1984.
+3. Nelson, M.R. : "LZW Data Compression", Dr. Dobb's Journal, October 1989.
 
 
 # Appendix G. On-line Capabilities Dialogue
@@ -1402,15 +1409,17 @@ Code written based on this information should be designed in a flexible way to a
 The following sequences are defined for use in mediating control between a GIF sender and GIF receiver over an interactive communications line.
 These sequences do not apply to applications that involve downloading of static GIF files and are not considered part of a GIF file.
 
-GIF CAPABILITIES ENQUIRY
+## GIF capabilities enquiry
 
 The GIF Capabilities Enquiry sequence is issued from a host and requests an interactive GIF decoder to return a response message that defines the graphics parameters for the decoder.
 This involves returning information about available screen sizes, number of bits/color supported and the amount of color detail supported.
 The escape sequence for the GIF Capabilities Enquiry is defined as:
 
-`ESC[>0g`  `0x1B 0x5B 0x3E 0x30 0x67`
+```
+1B 5B 3E 30 67    ESC[>0g
+```
 
-GIF CAPABILITIES RESPONSE
+## GIF capabilities response
 
 The GIF Capabilities Response message is returned by an interactive GIF decoder and defines the decoder's display capabilities for all graphics modes that are supported by the software.
 Note that this can also include graphics printers as well as a monitor screen.
@@ -1437,19 +1446,19 @@ the GIF data stream can be processed within an error correcting protocol:
 
 `#87a;1;0,320,200,4,0;0,640,200,2,2;0,640,350,4,2<CR>`
 
-ENTER GIF GRAPHICS MODE
+## Enter GIF graphics mode
 
 Two sequences are currently defined to invoke an interactive GIF decoder into action.
 The only difference between them is that different output media are selected.
 These sequences are:
 
-`ESC[>1g` Display GIF image on screen `0x1B 0x5B 0x3E 0x31 0x67`
+- `ESC[>1g` / `0x1B 0x5B 0x3E 0x31 0x67`: Display GIF image on screen
 
-`ESC[>2g` Display image directly to an attached graphics printer. The image may optionally be displayed on the screen as well. `0x1B 0x5B 0x3E 0x32 0x67`
+- `ESC[>2g` / `0x1B 0x5B 0x3E 0x32 0x67`: Display image directly to an attached graphics printer. The image may optionally be displayed on the screen as well.
 
 Note that the 'g' character terminating each sequence is in lowercase.
 
-INTERACTIVE ENVIRONMENT
+## Interactive Environment
 
 The assumed environment for the transmission of GIF image data from an interactive application is a full 8-bit data stream from host to micro.
 All 256 character codes must be transferrable.
