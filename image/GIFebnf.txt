@@ -1,0 +1,51 @@
+GIF ::= Signature Header Image+ Terminator
+  Signature ::= 'GIF' Version
+    Version ::= '87a'
+              | '89a'
+
+  Header ::= LogicalScreenDescriptor7 GlobalColorMap?
+    LogicalScreenDescriptor7 ::= LSWidth2 LSHeight2 LSFlags BgColorIndex AspectRatio
+      LSFlags ::= GlobalColorTable ColorResolution Sort GCTSize
+    GlobalColorMap ::= Palette
+
+  Image ::= Extension* GraphicRenderingBlock
+    Extension ::= '!' FunctionCode SubBlocks
+                | '!' '\xFF' '11' ApplicationHdr11 ApplicationData // ex: looping extension '!' '\xFF' 11 'NETSCAPE' '2.0'
+                | '!' '\xFE' CommentData
+                | '!' '\xF9' '4' GCHdr '\0' // graphical control
+      ApplicationHdr11 ::= ApplicationIdentifier8 ApplicationAuthCode3
+      ApplicationData ::= SubBlocks
+      CommentData ::= SubBlocks
+      GCHdr ::= GCFlags DelayTime2 TransparentColorIdx
+        GCFlags ::= DisposalMethod UserInput Transparency
+
+    GraphicRenderingBlock ::= ImageDescriptor LocalColorMap? RasterData
+                          | PlainTextExtension
+      ImageDescriptor ::= ',' LeftPos2 TopPos2 Width2 Height2 ImageFlags
+        ImageFlags ::= LocalColorTable Interlace Sort LCTSize
+        LocalColorTable ::= Palette
+        RasterData ::= LZWCodeSize SubBlocks
+      PlainTextExtension ::='!' '\1' '12' PlainTextHdr12 PlainTextData
+        PlainTextHdr12 ::= TextGridLeftPos2 TextGridTopPos2 TextGridWidth2 TextGridHeight2 CharCellWidth CharCellHeight TextFgColIdx TextBgColIdx
+        PlainTextData ::= SubBlocks
+
+  Terminator ::= ';'
+
+Palette ::= (Red Green Blue)+
+
+SubBlocks ::= (Length Data+)* '\0'
+
+// simplified grammar for overall view of the format - without the plain text extension
+Overall ::= 'GIF' '8[7-9]a' LogicalScreenDescriptor GlobalPal? (('!' FunctionCode (Length Data+)* '\0')* ',' ImageDescriptor LocalPal? CodeSize (Length Data+)* '\0')+ ';'
+
+// https://lukaslueg.github.io/macro_railroad_wasm_demo/
+// parenthesis are superfluous to delimit blocks
+macro_rules! GIF {
+  ( (GIF "8[7-9]a" $LogicalScreenDescriptor:expr $($GlobalColorMap:expr)? )
+    $(
+      ($( ! $FunctionCode:expr
+        ( $($Length:expr $Data:ty )* "\0" )
+      )*)
+    (, $ImageDescriptor:expr $($LocalColorMap:expr)? $CodeSize:expr ($($Length:expr $Data:ty)* "\0")) )+
+  ; ) => { ... };
+}

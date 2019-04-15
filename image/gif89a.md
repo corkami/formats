@@ -1169,7 +1169,7 @@ GraphicRenderingBlock ::= TableBasedImage | PlainTextExtension
 TableBasedImage       ::= ImageDescriptor LocalColorTable? ImageData
 SpecialPurposeBlock   ::= ApplicationExtension | CommentExtension
 
-GIFDataStream ::= Header LogicalScreenDescriptor GlobalColorTable? (GraphicControlExtension? ((ImageDescriptor LocalColorTable? ImageData) | PlainTextExtension) | (ApplicationExtension | CommentExtension))* Trailer
+Complete ::= Header LogicalScreenDescriptor GlobalColorTable? (GraphicControlExtension? ((ImageDescriptor LocalColorTable? ImageData) | PlainTextExtension) | (ApplicationExtension | CommentExtension))* Trailer
 -->
 
 NOTE : The grammar indicates that it is possible for a GIF Data Stream to contain the Header,
