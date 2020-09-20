@@ -11,7 +11,18 @@ External: [ExifTools tag names](https://www.sno.phy.queensu.ca/~phil/exiftool/Ta
 
 Tools: [TweakPNG](http://entropymine.com/jason/tweakpng/), [OptiPNG](http://optipng.sourceforge.net/), [AdvComp](http://www.advancemame.it/download)
 
+
 # Structure
+```
+00                      | 08          0C          10 ??
+89 .P .N .G \r \n ^Z \n | LL LL LL LL TT TT TT TT DD CC CC CC CC
+```
+- Magic:8 a hardcoded magic at offset 0
+- a sequence of chunk
+  - LL:>4  Length of the chunk's data
+  - TT:4   Type, on 4 letters
+  - DD:?   Data, of given length
+  - CC:>4  CRC of type and data
 
 (Probably the simplest structure in file formats)
 

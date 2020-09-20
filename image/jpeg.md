@@ -24,6 +24,24 @@ Tool and source:
 
 # Structure
 
+File structure:
+```
+00    02
+Ma Ma Ss?
+```
+- 00+2 Magic `FF D8`
+- 02+? Segments
+
+Segment structure
+```
+# 00 01 02    04
+# FF Sm Si Si D?
+```
+- 00+1 Hardcoded `FF` 
+- 01+1 Segment marker. `FE` for comment segment
+- 02+2 Size (for most segments), this size included
+- 04+? Data
+
 It could be a very simple structure if it didn't have exceptions.
 
 A JPEG file is a sequence of Type-Length-Value chunks called *segments*:
@@ -32,6 +50,7 @@ A JPEG file is a sequence of Type-Length-Value chunks called *segments*:
 2. the length is a big endian on 2 bytes, and covers the size itself. So the whole segment's length is `2 + length` (to cover the length of the *marker*). This also means that any segment is at most 65537 bytes long.
 
 (\*) this non-zero byte rule is important: if any data encoding would output an `FF` byte, then a literal `00` should be encoded after it to express it's an `FF` byte of data and not a segment marker.
+
 
 ## Exceptions
 There are 2 exceptions to this TLV structure:
@@ -45,6 +64,7 @@ macro_rules! ECS {
 *JPEG overall structure*: *Scan* is a segment too, but *ECS* is only possible right after a scan.
 
 ![JPEG syntax](JPEGsyntax.svg)
+
 
 ### parameter-less markers
 
@@ -81,6 +101,7 @@ It is read as:
 But many JPEGs don't have that `FF E0` segment at offset 3, such as those with EXIF information and start like:
 - `FF D8` `FF E1` `XX YY` `.E .x .i .f \0` ....
 
+
 # Diagrams
 
 *an [RGB JPEG](rgb.jpg) dissected*:
@@ -99,6 +120,7 @@ Observations:
 
 The abbreviated format (where several JPGs are transmitted without re-sharing the header) is not implemented to our knowledge.
 
+
 # Segments and markers
 JPEG reserved
 - `00`: *nul* JPEG reserved
@@ -106,6 +128,7 @@ JPEG reserved
 reserved
 - `01`: *TEM* temporary marker for arithmetic coding
 - `02`: *RESn* reserved 02-FB 
+
 
 ## JPEG 1994
 defined in [ITU T.81 | ISO IEC 10918-1](https://www.w3.org/Graphics/JPEG/itu-t81.pdf)
@@ -254,6 +277,7 @@ Part 11: JPEG 2000 for Wireless
 - `67`: *ESD* Error Sensitivity Descriptor
 - `69`: *RED* Residual Error Descriptor
 
+
 # Markers table
 
  &nbsp;  | x0      | x1      | x2      | x3      | x4      | x5      | x6      | x7      | x8      | x9      | xA      | xB      | xC      | xD      | xE      | xF
@@ -279,6 +303,7 @@ no real standard, 3 variants:
 - pure concatenation of JPG images. right after an `EOI` comes a new `SOI` of a next frame. See FFMpeg `mjpeg` codec.
 - Motion-JPEG A (real JFIF): starts like a JFIF image, with an `FF E1` APP1 then an `mjpg` tag, but then with standard JFIF strucure (markers, `00`-stuffed ECS).
 - Motion-JPEG B (not a JFIF): starts directly as a mjpg marker, then no JFIF marker for various segments, since the `mjpg` header contains pointers to Quantization table, huffman table, Start of Frame, and start of scan... The ECS data is not `00`-byte stuffed.
+
 
 # tricks
 - `APPx` segments are not enforced at offset 0 despite the specifications. They're not even required.

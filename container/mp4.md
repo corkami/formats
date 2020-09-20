@@ -1,4 +1,9 @@
-# MP4 / "QuickTime" / ISO 14496-1 Media Format / Atom/Box format
+Base Media format, 
+aka MP4
+aka QuickTime,
+aka *ISO/IEC base media file format (MPEG-4 Part 12)*,
+published in ISO 14496-1
+aka Atom/Box
 
 docs:
 - http://standards.iso.org/ittf/PubliclyAvailableStandards/c061988_ISO_IEC_14496-12_2012.zip
@@ -14,9 +19,10 @@ tools:
 
 file types:
 - mp4
-- quick time
-- heic
-- jpeg2000
+- quick time .mov
+- heic/heif (not supporting any parasites or appended data)
+- jpeg2000 jp2
+- 3GP, 3G2, .mj2, .dvb, .dcf, .m21, .f4v
 
 
 # structure
