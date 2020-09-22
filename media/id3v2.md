@@ -3,7 +3,7 @@ ID3 v2.3.0
 
 Doc: https://id3.org/id3v2.3.0
 
-Dissector: ffprobe -show_streams 
+Dissector: ffprobe -show_frames
 
 Structure: `Header ExtendedHeader? Frames+`
 
