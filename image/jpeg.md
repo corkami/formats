@@ -108,7 +108,7 @@ reserved
 - `02`: *RESn* reserved 02-FB 
 
 ## JPEG 1994
-defined in [ITU T.81 | ISO IEC 10918-1](https://www.w3.org/Graphics/JPEG/itu-t81.pdf)
+defined in [ITU T.81 | ISO/IEC 10918-1](https://www.w3.org/Graphics/JPEG/itu-t81.pdf)
 
 frame types
 (supported by libjpeg: 0/1/2/9/10):
@@ -159,7 +159,7 @@ delimeters:
 
 ## JPEG 1997
 
-extensions ITU T.84 | ISO IEC 10918-3
+extensions ITU T.84 | ISO/IEC 10918-3
 
 application segments:
 - `E0`: *APP0* application segment  0 (JFIF (len >=14) / JFXX (len >= 6) / AVI MJPEG)
@@ -202,7 +202,7 @@ extension data sections:
 
 ## [JPEG 2000](https://en.wikipedia.org/wiki/JPEG_2000)
 
-defined in IEC 15444-1 JPEG 2000 Core (part 1)
+defined in ISO/IEC 15444-1 JPEG 2000 Core (part 1)
 
 A JP2 file starts with an Atom/Box structure (like an mp4/mov, with the typical `ftyp` atom...)
 then eventually contains a box of length `0` (until the end of the file), which then contains the JFIF segment/markers structure with these
@@ -254,11 +254,20 @@ Part 11: JPEG 2000 for Wireless
 - `67`: *ESD* Error Sensitivity Descriptor
 - `69`: *RED* Residual Error Descriptor
 
+## [JPEG XL](https://en.wikipedia.org/wiki/JPEG_XL)
+
+defined in ISO/IEC 18181-1 JPEG XL Core coding system (part 1)
+
+- `0A`: *JXL* start of JPEG XL codestream
+
+(no other markers are defined for JPEG XL)
+
+
 # Markers table
 
  &nbsp;  | x0      | x1      | x2      | x3      | x4      | x5      | x6      | x7      | x8      | x9      | xA      | xB      | xC      | xD      | xE      | xF
 --------:|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:--------|:------
- **0x**  | nul     | TEM     | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;
+ **0x**  | nul     | TEM     | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | JXL     | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;
  &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;
  **5x**  | &nbsp;  | SIZ     | COD     | COC     | &nbsp;  | TLM     | &nbsp;  | PLM     | PLT     | &nbsp;  | &nbsp;  | &nbsp;  | QCD     | QCC     | RGN     | POC
  **6x**  | PPM     | PPT     | &nbsp;  | CRG     | COM     | SEC     | EPB     | ESD     | EPC     | RED     | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;  | &nbsp;
