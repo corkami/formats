@@ -293,7 +293,7 @@ no real standard, 3 variants:
 - `APPx` segments are not enforced at offset 0 despite the specifications. They're not even required.
 
 lossless storage:
-- to make JPEG store data losslessly: use grayscale, 100% quality, then either width or eight to 1 pixel, or duplicate the padded data 8 times (JPEG images are stored in 8x8 blocks).
+- to make JPEG store data losslessly: use grayscale, 100% quality, then either width or height to 1 pixel, or duplicate the padded data 8 times (JPEG images are stored in 8x8 blocks).
 
 split scans:
 - `ECS` is easily bigger than 64kb, while a COMment segment is limited to 64kb, so to store a big JPEG in comments, split the scan by making the JPEG progressive or using custom scans via JPEGTran's [multiple scan progression control](https://github.com/cloudflare/jpegtran/blob/master/wizard.txt#L113)
